@@ -1,24 +1,14 @@
 # vue-projcet
 
-## Project setup
+## 命令行说明
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+npm install   // 依赖安装
+npm run serve   // 启动开发环境
+npm run build   // 项目打包
+npm run lint   // 执行ESlint检测与修复
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 组件说明
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* /views/Money.vue  测试局部路由守卫
+* /views/Order.vue  测试全局路由守卫

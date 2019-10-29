@@ -24,7 +24,13 @@ export default {
     touchHandle(item) {
       console.log(item)
       // 编程式路由跳转，跳转到 localhost:8080/#/detail/1
-      this.$router.push('/detail/'+item.id)
+      // this.$router.push('/detail/'+item.id)
+      this.$router.push({
+        name: 'detail',
+        params: {
+          id: item.id
+        }
+      })
     }
   }
 }

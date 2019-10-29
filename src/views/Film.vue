@@ -3,6 +3,8 @@
 
     <h1>首页</h1>
 
+    <div v-text='$store.state.count'></div>
+
     <div class="tabs">
       <!-- <span>正在热映</span>
       <span>即将上映</span> -->
@@ -14,9 +16,11 @@
     </div>
 
     <!-- 在这里渲染二级路由所对应的组件 -->
-    <router-view></router-view>
+    <!-- 带有 name 属性的router-view，叫做命名视图 -->
+    <router-view name='b'></router-view>
+    <router-view name='a'></router-view>
 
-
+    <!-- <div v-text='$store.state.isLogin'></div> -->
 
   </div>
 </template>

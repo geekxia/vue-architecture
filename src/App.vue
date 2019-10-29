@@ -1,6 +1,8 @@
 <template>
   <div id="app">
 
+     <!-- <div @touchstart='skipTodo'>打开todolist</div> -->
+
      <div class="navbar">
 
        <!-- <span>电影</span>
@@ -24,10 +26,15 @@
        <router-link to='/user' tag='span' activeClass='on'>我的</router-link>
 
 
+
+
      </div>
 
      <!-- 在这里承载一级路由所对应的组件，在这里渲染一线路由所对应的组件 -->
      <router-view></router-view>
+     <!-- <router-view name='geek'></router-view> -->
+
+
 
   </div>
 </template>
@@ -73,6 +80,9 @@ export default {
     },
     fn3(e) {
       console.log('end', e)
+    },
+    skipTodo() {
+      this.$router.push({name: 'todo', params: {}})
     }
   }
 }
