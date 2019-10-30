@@ -12,6 +12,10 @@ import Order from '@/views/Order.vue'
 import Login from '@/views/Login.vue'
 import Money from '@/views/Money.vue'
 import Test from '@/views/Test.vue'
+import ES from '@/views/ES.vue'
+import ScssTest from '@/views/ScssTest.vue'
+import Element from '@/views/Element.vue'
+import MintUi from '@/views/MintUi.vue'
 
 import HotList from '@/components/HotList.vue'
 import FutureList from '@/components/FutureList.vue'
@@ -91,6 +95,22 @@ const router = new VueRouter({
     {
       path: '/test',
       component: Test
+    },
+    {
+      path: '/es',
+      component: ES
+    },
+    {
+      path: '/scss',
+      component: ScssTest
+    },
+    {
+      path: '/ele',
+      component: Element
+    },
+    {
+      path: '/mint',
+      component: MintUi
     }
   ]
 })

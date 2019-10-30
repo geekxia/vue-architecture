@@ -4,7 +4,6 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-
 const store = new Vuex.Store({
   state: {
     count: 0,
@@ -12,7 +11,14 @@ const store = new Vuex.Store({
       name: '1912',
       age: 20
     },
-    musicList: []
+    musicList: [],
+    nums: [1,2,3,4,5,6,7,8,9,10],
+    iconArr: [14]
+  },
+  getters: {
+    nums2(state) {
+      return state.nums.join('-')
+    }
   },
   mutations: {
     // 同步地修改state里面的count这个数据

@@ -1,5 +1,7 @@
 <template lang="html">
   <div>
+    <!-- 使用 ElementUI -->
+    <el-input-number v-model="num" :step="2" size='small'></el-input-number>
 
     <h1>首页</h1>
 
@@ -27,6 +29,11 @@
 
 <script>
 export default {
+  data: function() {
+    return {
+      num: 5
+    }
+  }
 }
 </script>
 
