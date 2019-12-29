@@ -22,10 +22,33 @@ npm run lint   // 执行ESlint检测与修复
 cnpm install sass-loader -D
 cnpm install node-sass -D
 ```
-```html
+```
 <style lang="scss" scoped>
   $color: red;
 </style>
+```
+
+## ESLint 配置
+
+* [ESLint官网](https://eslint.bootcss.com/)
+* 在package.json中进行配置
+```
+"eslintConfig": {
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/essential",
+    "eslint:recommended"
+  ],
+  "rules": {
+    "no-console": 0
+  },
+  "parserOptions": {
+    "parser": "babel-eslint"
+  }
+}
 ```
 
 
