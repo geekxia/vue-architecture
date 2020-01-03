@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 // 引入我们定义的路由匹配项
 import router from './router'
-import store from './store'
+import store from './store/index'
+
 
 // 使用 ElementUI，通常用于PC端（做PC端应用时建议使用）
 import ElementUI from 'element-ui';

@@ -1,14 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import orderStore from './order'
+import order from './order'
+import user from './user'
+import count from './count'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  mudules: {
-    orderStore
-
+  // modules 分模块
+  modules: {
+    order,
+    user,
+    count
   }
 })
 

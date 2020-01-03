@@ -1,7 +1,7 @@
 <template lang="html">
-  <div>
-    <h1>影院页面</h1>
-  </div>
+<div>
+  <h3>Hello Devtools</h3>
+</div>
 </template>
 
 <script>

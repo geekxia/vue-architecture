@@ -1,7 +1,7 @@
-const orderStore = {
+const userStore = {
   namespaced: true,
   state: {
-    msg: '1111'
+    msg: '2222'
   },
   mutations: {
     changeMsg(state, payload) {
@@ -12,9 +12,9 @@ const orderStore = {
     asyncMsg(store, payload) {
       setTimeout(()=>{
         store.commit('changeMsg', payload)
-      }, 1000)
+      }, 2000)
     }
   }
 }
 
-export default orderStore
+export default userStore

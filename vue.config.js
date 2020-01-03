@@ -1,5 +1,6 @@
 module.exports = {
   devServer: {
+    port: 9090,
     proxy: {
       '/restapi': {
         target: 'https://h5.ele.me',

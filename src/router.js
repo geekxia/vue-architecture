@@ -2,11 +2,18 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // 引入组件，在Vue中，一切皆组件
-import TodoList from '@/views/TodoList.vue'
-import Film from '@/views/Film.vue'
-import Movie from '@/views/Movie.vue'
-import News from '@/views/News.vue'
-import User from '@/views/User.vue'
+
+// 异步组件
+const TodoList = ()=>import('@/views/TodoList.vue')
+const Film = ()=>import('@/views/Film.vue')
+const Movie = ()=>import('@/views/Movie.vue')
+const News = ()=>import('@/views/News.vue')
+const User = ()=>import('@/views/User.vue')
+
+const TestVuexModule = ()=>import('@/views/TestVuexModule.vue')
+const TestDevtools = ()=>import('@/views/TestDevtools.vue')
+
+// 同步组件
 import Detail from '@/views/Detail.vue'
 import Order from '@/views/Order.vue'
 import Login from '@/views/Login.vue'
@@ -29,6 +36,7 @@ const router = new VueRouter({
   routes: [
     {
       path: '/todo',   // 当路由是 /todo时，渲染TodoList组件；下面的同理
+      // component: ()=>import('@/views/TodoList.vue'),
       component: TodoList,
       name: 'todo'
     },
@@ -111,6 +119,14 @@ const router = new VueRouter({
     {
       path: '/mint',
       component: MintUi
+    },
+    {
+      path: '/TestVuexModule',
+      component: TestVuexModule
+    },
+    {
+      path: '/TestDevtools',
+      component: TestDevtools
     }
   ]
 })
