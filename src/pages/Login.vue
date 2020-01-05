@@ -1,11 +1,12 @@
 <template lang="html">
-<div>
-  <h3>Hello Devtools</h3>
-</div>
+  <div>
+    <h1>登录页</h1>
+  </div>
 </template>
 
 <script>
 export default {
+
 }
 </script>
 

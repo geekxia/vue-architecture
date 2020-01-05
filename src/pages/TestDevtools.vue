@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <HelloDevtools></HelloDevtools>
+  <HelloWorld></HelloWorld>
   <h1 v-text='count'></h1>
 
   <button type="button" @click='click("add")'>add</button>
@@ -14,11 +14,12 @@
 </template>
 
 <script>
+// 测试devtools中的组件视图关系
+const HelloWorld = ()=>import('@/components/HelloWorld.vue')
 import { mapState, mapMutations, mapActions } from 'vuex'
-const HelloDevtools = ()=>import('@/components/HelloDevtools.vue')
 export default {
   components: {
-    HelloDevtools
+    HelloWorld
   },
   computed: {
     ...mapState('count', ['count'])

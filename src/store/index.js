@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import testStore from './modules/test'
+import orderStore from './modules/order'
+import userStore from './modules/user'
+import count from './modules/count'
+Vue.use(Vuex)   // 注册
 
-import order from './order'
-import user from './user'
-import count from './count'
-
-Vue.use(Vuex)
-
+// 仓库、数据中心、总部
 const store = new Vuex.Store({
-  // modules 分模块
   modules: {
-    order,
-    user,
+    testStore,
+    orderStore,
+    userStore,
     count
   }
 })

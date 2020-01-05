@@ -1,157 +1,119 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// 引入组件，在Vue中，一切皆组件
+// 使用Vue.use()注册路由
+Vue.use(VueRouter)
 
-// 异步组件
-const TodoList = ()=>import('@/views/TodoList.vue')
-const Film = ()=>import('@/views/Film.vue')
-const Movie = ()=>import('@/views/Movie.vue')
-const News = ()=>import('@/views/News.vue')
-const User = ()=>import('@/views/User.vue')
-
-const TestVuexModule = ()=>import('@/views/TestVuexModule.vue')
-const TestDevtools = ()=>import('@/views/TestDevtools.vue')
-
-// 同步组件
-import Detail from '@/views/Detail.vue'
-import Order from '@/views/Order.vue'
-import Login from '@/views/Login.vue'
-import Money from '@/views/Money.vue'
-import Test from '@/views/Test.vue'
-import ES from '@/views/ES.vue'
-import ScssTest from '@/views/ScssTest.vue'
-import Element from '@/views/Element.vue'
-import MintUi from '@/views/MintUi.vue'
-
-import HotList from '@/components/HotList.vue'
-import FutureList from '@/components/FutureList.vue'
-import FilterTab from '@/components/FilterTab.vue'
+// 使用异步组件，优化性能
+const Home = ()=>import('@/pages/Home.vue')
+const TodoList = ()=>import('@/pages/TodoList.vue')
+const TestAssets = ()=>import('@/pages/TestAssets.vue')
+const TestModule = ()=>import('@/pages/TestModule.vue')
 
 
-Vue.use(VueRouter)  // 在Vue中使用Vue-router，注册路由
 
+// import TestSass from '@/pages/TestSass.vue'
+import MusicList from '@/pages/MusicList.vue'
+import MusicDetail from '@/pages/MusicDetail.vue'
+
+import Film from '@/pages/Film.vue'
+import Hot from '@/components/Hot.vue'
+import Future from '@/components/Future.vue'
+
+import TestElement from '@/pages/TestElement.vue'
+import TestVuex from '@/pages/TestVuex.vue'
+import TestDevtools from '@/pages/TestDevtools.vue'
+
+// 创建一个路由实例
 const router = new VueRouter({
-  // mode: 'history',  // 切换VueRouter的路由模式
+  mode: 'hash',
+  // 这个routes描述了url路由和组件之间一一对应的显示关系
   routes: [
     {
-      path: '/todo',   // 当路由是 /todo时，渲染TodoList组件；下面的同理
-      // component: ()=>import('@/views/TodoList.vue'),
-      component: TodoList,
-      name: 'todo'
+      path: '/',
+      components: {
+        default: Home
+        // aaa: TodoList,
+        // bbb: TestSass
+        // 当路由匹配成功的时候，使用名字叫aaa的router-view容器来显示这个组件
+      }
     },
     {
-      path: '/',      // 当访问根路径时，重定向跳转至 /film
-      redirect: '/film'
+      path: '/todo',   // 真实的路由路径
+      component: TodoList,
+      name: 'todo',    // 给路由（这个映射关系）取个容易编码的名字
+      alias: '/todolist'   // 小名，路由路径
+    },
+    {
+      path: '/sass',
+      component: ()=>import('@/pages/TestSass.vue')
+    },
+    {
+      path: '/music',
+      component: MusicList
+    },
+    {
+      path: '/detail/:id/:name',  // 动态路由，路由传参
+      component: MusicDetail
     },
     {
       path: '/film',
-      components: {
-        default: Film    // 视图命名
-      },
-      // 子路由，即二级路由、路由嵌套
+      component: Film,
       children: [
         {
-          path: 'hot',
-          name: 'hot',
-          components: {
-            b: HotList,   // 命名视图，即有名字的 router-view
-            a: FilterTab
-          }
+          path: '',
+          component: Hot
         },
         {
           path: 'future',
-          component: FutureList
-        },
-        {
-          path: '',
-          redirect: 'hot'   // 当路由是 /film 时，重定向到 /film/hot
+          component: Future
         }
       ]
     },
     {
-      path: '/movie',
-      component: Movie,
-      alias: '/m',  // 路由别名
-      name: 'm'   // 路由名称
+      path: '/testEle',
+      component: TestElement
     },
     {
-      path: '/news',
-      component: News
+      path: '/testVuex',
+      component: TestVuex
     },
     {
-      path: '/user',
-      component: User
-    },
-    {
-      path: '/detail/:id',  // 动态路由，id 是变化的
-      component: Detail,
-      name: 'detail'
-    },
-    {
-      path: '/order',
-      component: Order
-    },
-    {
-      path: '/login',
-      component: Login
-    },
-    {
-      path: '/money',
-      component: Money
-    },
-    {
-      path: '/test',
-      component: Test
-    },
-    {
-      path: '/es',
-      component: ES
-    },
-    {
-      path: '/scss',
-      component: ScssTest
-    },
-    {
-      path: '/ele',
-      component: Element
-    },
-    {
-      path: '/mint',
-      component: MintUi
-    },
-    {
-      path: '/TestVuexModule',
-      component: TestVuexModule
-    },
-    {
-      path: '/TestDevtools',
+      path:'/testDevtools',
       component: TestDevtools
+    },
+    {
+      path: '/TestAssets',
+      component: TestAssets
+    },
+    {
+      path: '/TestModule',
+      component: TestModule
+    },
+    {
+      path: '/*',
+      redirect: '/'
     }
   ]
 })
 
+
 // 路由守卫，全局的路由拦截
-let isLogin = true
-router.beforeEach((to, from, next) => {
-  if (to.path === '/order') {
-    if (!isLogin) {
-      // 如果用户没有登录，跳转至 /login
-      next('/login')
-    } else {
-      // 已登录，直接通过
-      next()
-    }
-  } else {
-    next()
-  }
-  // console.log('to', to)
-  // console.log('from', from)
-  // next()
-})
+// let isLogin = true
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/order') {
+//     if (!isLogin) {
+//       // 如果用户没有登录，跳转至 /login
+//       next('/login')
+//     } else {
+//       // 已登录，直接通过
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
+
+// 抛出
 export default router
-
-
-// 路由跳转默认是 Hash模式，底层通过 location.hash()来实现的
-// History模式，底层是通过 history.pushState() 来实现的

@@ -86,21 +86,10 @@ cnpm install node-sass -D
 <style lang="scss" scoped>
 	@import '@/assets/css/common.scss';
 	.page {
-	  > button {
+	  &>button {
 	    font-size: $btnSize;
 	    color: $color;
 	  }
-	  > div {
-	    button {
-	      color: $color2;
-	    }
-	  }
-	  > .box1 {
-	    .btn {
-	      border: .03rem solid red;
-	    }
-	  }
-	}
 </style>
 ```
 * 如果因为网络原因，node-sass安装失败，使用下面命令进行安装
@@ -121,7 +110,7 @@ npm install node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sas
 npm install vue-router -S
 ```
 ```js
-// router.js
+// /src/router.js
 import Vue form 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -136,7 +125,13 @@ const router = new VueRouter({
   ]
 })
 export default router
+// 在main.js引入，在Vue实例化时，进行挂载
+new Vue({
+	router,
+	render: h=>h(App)
+}).$mount('#app')
 ```
+
 * 路由实现，使用`router-view`和`router-link`组件
 ```
 <div class="navbar">
@@ -239,3 +234,32 @@ export default {
   }
 }
 ```
+
+
+#### 使用Element
+
+```
+// npm install element-ui -S
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+```
+
+
+#### 使用Vuex状态管理工具
+
+```
+npm install vuex -S
+```
+* 五个核心概念：state, mutations, actions, getters, modules
+* 当分多个modules时，每个module都要手动指定 namespaced:true 命名空间。
+* 多modules时，尽量避免命名冲突，以减少代码的复杂度。
+
+
+#### axios的使用
+
+* 前后端分离项目，在工程化环境一般使用axios调接口
+* axios非常轻量级，并且支持Promise
+* axios的使用，必须预先封装，要配置请求拦截器和响应拦截器
+* 在请求拦截器中，比如添加token等
+* 在响应拦截器中，对响应数据进行预先过滤，以失败的情况进行统一处理。

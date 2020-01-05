@@ -1,7 +1,7 @@
-const userStore = {
+const orderStore = {
   namespaced: true,
   state: {
-    msg: '2222'
+    msg: 'order msg'
   },
   mutations: {
     changeMsg(state, payload) {
@@ -9,12 +9,12 @@ const userStore = {
     }
   },
   actions: {
-    asyncMsg(store, payload) {
+    getMusic() {
       setTimeout(()=>{
-        store.commit('changeMsg', payload)
+        console.log('order store getMusic')
       }, 2000)
     }
   }
 }
 
-export default userStore
+export default orderStore

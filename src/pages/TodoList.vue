@@ -1,66 +1,69 @@
 <template>
+  <div id='app' class="app">
 
-  <div class="app">
-
-      <!-- 导航条 -->
-      <div class="app_bar">
-        <div>
-          <span>TODOS</span>
-          <input type="text" v-model.trim='todo' placeholder="添加todos" @keyup.enter="confirm">
-        </div>
+    <!-- 导航条 -->
+    <div class="app_bar">
+      <div>
+        <span>TODOS</span>
+        <input
+          type="text"
+          v-model.trim='todo'
+          @keyup.enter='confirm'
+          placeholder="添加todos" />
       </div>
-
-      <!-- 正在进行的任务列表 -->
-      <!-- 当v-for循环中要使用v-model时，外层的数组必须是[{},{}],不能是[1,2,3] -->
-      <div class="panel">
-        <div class="panel_title">
-          <span>正在进行</span>
-          <span v-text="list1.length"></span>
-        </div>
-        <div class="panel_list" v-for="(ele,idx) in list1" :key='idx'>
-          <span @click='transform(idx, "1")'></span>
-          <span>
-            <input v-model='ele.title' />
-          </span>
-          <span @click="remove(idx, '1')"></span>
-        </div>
-      </div>
-
-
-      <!-- 已经完成的任务列表 -->
-      <div class="panel">
-        <div class="panel_title">
-          <span>已经完成</span>
-          <span v-text="list2.length"></span>
-        </div>
-        <!-- 一行 -->
-        <div class="panel_list panel_list-done" v-for="(ele,idx) in list2" :key='idx'>
-          <span @click='transform(idx, "0")'></span>
-          <span><input v-model="ele.title" /></span>
-          <span @click="remove(idx, '0')"></span>
-        </div>
-      </div>
-
-      <!-- 底部 -->
-      <div class="app_bot">此todos由1912班制作完成</div>
     </div>
+
+    <!-- 正在进行的任务列表 -->
+    <!-- 当v-for循环中要使用v-model时，外层的数组必须是[{},{}],不能是[1,2,3] -->
+    <div class="panel">
+      <div class="panel_title">
+        <span>正在进行</span>
+        <span v-text='list1.length'></span>
+      </div>
+      <div class="panel_list" v-for="(item, idx) in list1" :key='idx'>
+        <span @click='transform(idx, "up")'></span>
+        <span>
+          <input v-model='item.title' />
+        </span>
+        <span @click='remove(idx, "up")'></span>
+      </div>
+    </div>
+
+
+    <!-- 已经完成的任务列表 -->
+    <div class="panel">
+      <div class="panel_title">
+        <span>已经完成</span>
+        <span v-text='list2.length'></span>
+      </div>
+      <!-- 一行 -->
+      <div class="panel_list panel_list-done" v-for="(item,idx) in list2" :key='idx'>
+        <span @click='transform(idx)'></span>
+        <span>
+          <input v-model='item.title' />
+        </span>
+        <span @click='remove(idx)'></span>
+      </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="app_bot">此todos由1916班制作完成</div>
+  </div>
 
 </template>
 
 <script>
-
 export default {
-  name: 'todolist',
   data: function() {
     return {
-      todo: '',     // 用于绑定输入框的变量
+      todo: '',
       list1: [],
       list2: []
     }
   },
   methods: {
-    // 确认添加一条工作内容
-    confirm: function() {
+    confirm() {
+      console.log(this.todo)
       if (!this.todo) return
       this.list1.push({
         title: this.todo,
@@ -68,40 +71,37 @@ export default {
       })
       this.todo = ''
     },
-    // 删除一条任务项
-    remove: function(idx, type) {
-      // 当type='1'删除上面那个数组中的项
-      if (type === '1') {
+    remove(idx, type) {
+      if (type === 'up') {
         this.list1.splice(idx, 1)
       } else {
         this.list2.splice(idx, 1)
       }
     },
-    // 任务移动
-    transform: function(idx, type) {
-      // 当type='1'时，任务从“正在进行”移动至“已经完成”
-      if (type === '1') {
-        let res = this.list1.splice(idx, 1)
-        this.list2.push(res[0])
+    transform(idx, type) {
+      if (type === 'up') {
+        var res1 = this.list1.splice(idx, 1)
+        this.list2.push(res1[0])
       } else {
-        let res = this.list2.splice(idx, 1)
-        this.list1.push(res[0])
+        var res2 = this.list2.splice(idx, 1)
+        this.list1.push(res2[0])
       }
     }
   }
 }
-
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 html, body {
   padding: 0;
   margin: 0;
   background: #cdcdcd;
 }
+
 .app {
 
 }
+
 .app_bar {
   height: 50px;
   background: rgba(47, 47, 47, 0.9);
@@ -144,7 +144,6 @@ html, body {
 }
 .panel_title>span:nth-child(1) {
   font-size: 28px;
-  float: left;
 }
 .panel_title>span:nth-child(2) {
   float: right;
@@ -175,11 +174,13 @@ html, body {
   float: left;
   width: 26px;
   height: 26px;
+  background: url(/icon/todo.png) no-repeat center center / 20px 20px;
   background: url(../assets/icon/todo.png) no-repeat center center / 20px 20px;
   margin-top: 3px;
   cursor: pointer;
 }
 .panel_list-done>span:nth-child(1) {
+  background: url(/icon/done.png) no-repeat center center / 20px 20px;
   background: url(../assets/icon/done.png) no-repeat center center / 20px 20px;
 }
 .panel_list>span:nth-child(2) {
@@ -199,6 +200,7 @@ html, body {
   float: right;
   width: 26px;
   height: 26px;
+  background: url(/icon/delete.png) no-repeat center center / 20px 20px;
   background: url(../assets/icon/delete.png) no-repeat center center / 20px 20px;
   cursor: pointer;
   margin-top: 3px;
@@ -209,4 +211,5 @@ html, body {
   font-size: 14px;
   text-align: center;
 }
+
 </style>
