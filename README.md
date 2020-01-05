@@ -30,6 +30,28 @@ npm run lint
 npm run build
 ```
 
+#### vue.config.js
+
+*  自定义本地服务的端口号
+*  本地服务反向代理，解决浏览器跨域问题
+```
+module.exports = {
+  devServer: {
+    port: 9090,
+    proxy: {
+      '/restapi': {
+        target: 'https://h5.ele.me',
+        changeOrigin: true
+      },
+      '/soso': {
+        target: 'https://c.y.qq.com',
+        changeOrigin: true
+      }
+    }
+  }
+}
+```
+
 
 #### ESLint/JSLint
 
@@ -45,6 +67,13 @@ npm run build
 ```
 * ESLint规则的配置，有三种处理级别，分别是`error-2  warn-1  off-0`
 * 在package.json中配置完成后，要重启服务器才能生效。
+
+
+#### devtools安装与使用
+
+* 在chrome浏览器扩展中安装完成后，需重启浏览器才能生效。
+* 组件关系
+* vuex -> mutations 数据变化的记录
 
 
 
@@ -254,6 +283,23 @@ npm install vuex -S
 * 五个核心概念：state, mutations, actions, getters, modules
 * 当分多个modules时，每个module都要手动指定 namespaced:true 命名空间。
 * 多modules时，尽量避免命名冲突，以减少代码的复杂度。
+* 基本写法，一个index.js用于创建store实例，并把各个modules引入进来
+* module实际上是一个对象，但必须加上 namespaced:true
+* 在组件中引入module时，两种基本语法，其一是 ...mapState('user', ['msg']), 其二是 ...mapState('user', {})
+* 当多个module中的key重名时，该如何处理？
+
+
+#### VueRouter异步组件的写法
+
+```
+// router.js
+
+// 异步组件，性能优化
+const Film = ()=>import('@/views/Film.vue')
+const Movie = ()=>import('@/views/Movie.vue')
+const News = ()=>import('@/views/News.vue')
+const User = ()=>import('@/views/User.vue')
+```
 
 
 #### axios的使用
