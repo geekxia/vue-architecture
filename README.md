@@ -1,311 +1,187 @@
-created by geekxia at 2019-12-30
+# webapp-shop
+created by xhf at 2020-6-16
 
-## 工程架构
+## webapp项目周
 
-当我们创建一个新项目，或者是从仓库里拉取到一个旧项目时。
-* README.md
-* package.json
+前端工程师的日常工作：
+	项目工程架构
+	业务开发：UI还原、组件设计、业务逻辑实现
+	项目上线
 
+#### 一、Vue项目创建
 
-#### 脚手架的使用
+1、安装node.js环境（node -v 验证）
+	A -> B C -> D -> E 依赖的层级关系
 
-* [Vue CLI 脚手架](https://cli.vuejs.org/zh/)
+2、安装vue脚手架（@vue/cli)
+	脚手架是一个第三方库，需先安装才能使用
+	-g 表示全局安装 global
 
-```
-// 创建项目
+3、使用脚手架来创建项目
+	warn warning 警告,可不处理
+	error 红色报错,是失败，一定要处理
 
-npm install @vue/cli -g
-vue create vue-project
+4、vue.config.js 配置文件
+	让我们的vue项目更加灵活、满足个性化的开发需求
 
-// 项目启动
-npm install
-npm run serve  或  npm start
+5、npm的使用（用于安装第三方模块）
+	(c)npm install xxx -S  把包记录在dependencies这里
+	(c)npm install yyy -D  把包记录在devDependencies这里
+	(c)npm install 会根据根目录中的package.json文件中记录的第三方包来进行安装。
+	(c)npm install zzz -g  全局安装永久可用
 
-// 项目执行ESLint检测与修复
-npm run lint
+6、cnpm的使用
+	```
+	# 把国外的服务器，切换至淘宝镜像源。
+	# 使用cnpm安装第三方模块，网速会更快。
+	npm install -g cnpm --registry=https://registry.npm.taobao.org
+	```
+7、ESLint
+	作用：用于规范代码风格
+	如果你的代码不满足规范，就会出现警告或报错。
 
-// 项目打包上线
-// 会生成一个 /dist 目录，把这个目录发给运维工程就可以了
-// .map这个是静态资源的映射关系的配置文件
-npm run build
-```
+8、devtools安装
+	git clone https://github.com/arcliang/Vue-Devtools-.git
+	打开谷歌浏览器：设置-扩展程序-加载已解压的扩展包
+	重启一下浏览器
 
-#### vue.config.js
-
-*  自定义本地服务的端口号
-*  本地服务反向代理，解决浏览器跨域问题
-```
-module.exports = {
-  devServer: {
-    port: 9090,
-    proxy: {
-      '/restapi': {
-        target: 'https://h5.ele.me',
-        changeOrigin: true
-      },
-      '/soso': {
-        target: 'https://c.y.qq.com',
-        changeOrigin: true
-      }
-    }
-  }
-}
-```
+9、webpack
+	本地服务器，指向 public 目录
+	热更新：webpack实时监测代码的变化，并实时编译，页面自动更新
+	当npm start启动了本地服务后，webpack就会动态地把入口文件main.js编译压缩插入到index.html文件中去。
 
 
-#### ESLint/JSLint
+#### 二、路由vue-router
 
-* [ESLint官网](https://eslint.bootcss.com/)
-* ESLint 这样的可以让你在编码的过程中发现问题，并且可以自己创建检测规则，保持代码编写风格的一致性。
-* Vue项目中，如何修改ESLint验证规则？在package.json文件中配置：
-```
-"eslintConfig": {
-	"rules": {
-		"no-console": 0
-	}
-}
-```
-* ESLint规则的配置，有三种处理级别，分别是`error-2  warn-1  off-0`
-* 在package.json中配置完成后，要重启服务器才能生效。
+1、单页面应用程序（SPA）
+	一切皆组件
+	vue-router让SPA开发更简单
 
+2、路由(vue-router)安装与基础使用
+	 安装 `cnpm install vue-router -S`
+	 在src/router.js文件，注册路由、创建路由实例并抛出
+	 在入口文件main.js中引入路由实例并挂载
+	 在App.js组件中，使用内置组件<router-view></router-view>容器来放置匹配成功的组件
+	 使用<router-link></router-link>实现页面的跳转
 
-#### devtools安装与使用
+3、搞清楚路由的三个问题
+	 	1）安装与配置：设计路径和组件匹配关系（一一对应关系）
+	 	2）和路径url匹配成功的组件，放在哪里进行展示？（router-view容器）
+	 	3）如何改变url？（router-link声明式路由，编程式路由）
 
-* 在chrome浏览器扩展中安装完成后，需重启浏览器才能生效。
-* 组件关系
-* vuex -> mutations 数据变化的记录
-
-
-
-<hr>
-## 项目结构说明
-
-#### 1、项目结构介绍
-
-* `src` 开发目录
-	* `src/main.js` 程序的入口文件
-	* `src/App.vue` App组件
-	* `scr/components` 组件目录
-	* `src/assets` 程序的静态资源目录
-* `public` 本地服务器的静态资源目录
-* `dist`目录，执行`npm run build`所生成的目录
-
-#### 2、单文件组件
-
-* [Vue单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)
-* 为什么要使用单文件？有哪些优势？
-* `<template></template>`放置HTML模板
-* `<script></script>`放置js代码
-* `<style></style>`放置样式代码
-* 一个`.vue`文件就是一个组件
+4、路由的基础知识
+ 	1）命名视图：给router-view组件命名，只有名字匹配了组件才能显示在视图中。
+	2）路由别名：给路由匹配关系取个小名，使用alias属性。
+	3）命名路由：给路由匹配关系取个名字，使用name属性。
+	4）重定向：从一个路径自动跳转到另一个路径，使用redirect属性。
+	5）两种路由模式：History模式 vs. Hash模式，前者部署至服务器会报404.
+	6）编程式导航：this.$router.push() / replace()。
+	7）通配符：在定义一一对应的路由匹配关系时，path中可以使用 * 来匹配任意字符。
+	8）动态路由：`{path:'/detail/:id', component: Detail}`，在Detail组件中可以使用`this.$route.params.id`来接收参数。
+	9）路由传参：`{path:'/detail/:id', component: Detail, props:true}`props选项来接收参数。
+	10）嵌套路由：<router-view>组件可以进行多级嵌套，譬如`/find/good`这样的多级路由。
+	11）路由懒加载：一种性能优化方案，让组件可以在路由匹配成功时按需加载。
+	12）路由守卫：对路由匹配行为进行拦截，全局守卫使用`router.beforeEach()`，局部守卫使用`beforeRouteEnter()`，常常用于实现登录权限拦截功能。
+	13）watch侦听器，还可以监听 $route的变化。
 
 
-<hr>
-## 项目架构
+#### 三、状态管理vuex
 
-#### 使用 SASS
+1、初识Vuex
 
-* [Sass官网](https://www.sass.hk/)
-```
-//  建议使用 cnpm 进行安装
-cnpm install sass-loader -D
-cnpm install node-sass -D
-```
-```
-<style lang="scss" scoped>
-	@import '@/assets/css/common.scss';
-	.page {
-	  &>button {
-	    font-size: $btnSize;
-	    color: $color;
-	  }
-</style>
-```
-* 如果因为网络原因，node-sass安装失败，使用下面命令进行安装
-```
-npm install node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
-```
-* [node-sass 安装失败报错的原因及解决办法(整理)](https://www.cnblogs.com/gitnull/p/10188030.html)
-* [Less官网](http://lesscss.cn/)
+	状态：即数据、视图。
+	状态管理的本质，就是对应用程序的数据进行科学地流程化管理，目标是让数据变化可预期、可控。
+	Flux一种数据管理架构方案，这是一种数据管理的思想，最早诞生于React团队。
+	React技术栈中，最出名的状态管理工具是 Redux和Mobx。
+	Vue技术栈中，最出名的状态管理工具是Vuex。
+	Vuex只是一种数据管理方案，并不是Vue开发必须的。换句话说，在架构Vue项目时可以不使用Vuex。
+	虽然可以不使用Vuex，但不得不说Vuex非常强大，所以还是建议尽量用上它。
+	Vuex常用于实现组件之间的数据交互、程序数据缓存等需求。
+	Vuex配合devtools，可以非常方便地调试应用程序中的数据bug。
 
-#### Vue-Router路由
+2、安装
 
-* 什么是SPA单页面程序？SPA应用有哪些优点和缺点？
+	cnpm install vuex -S
+	在src目录中新建一个名为store.js的文件
+	引入vue、vuex，并注册Vue.use(Vuex)
+	创建Vuex.Store实例，使用到四个重要选项：state、getters、mutations、actions，并抛出该实例
+	在main.js中引入并挂载。
+	如何验证安装成功呢？在任何中访问this.$store。
 
-###### 开始使用路由
+3、Vuex基础知识点
 
-```
-// Vue-Router的安装
-npm install vue-router -S
-```
-```js
-// /src/router.js
-import Vue form 'vue'
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
-const router = new VueRouter({
-  // mode: 'history',  // 切换VueRouter的路由模式
-  routes: [
-    {
-      path: '/todo',   // 当路由是 /todo时，渲染TodoList组件；下面的同理
-      component: TodoList,
-      name: 'todo'
-    }
-  ]
-})
-export default router
-// 在main.js引入，在Vue实例化时，进行挂载
-new Vue({
-	router,
-	render: h=>h(App)
-}).$mount('#app')
-```
+	1）五个核心概念
+		state：用于定义共享数据
+		getters：相当于是计算属性
+		mutations：这是vuex官方建议的用于直接地同步地修改state
+		actions：这是vuex与后端接口交互的唯一入口，用于间接地异步地修改state
+		modules：用于把一个完整的根store拆分成多个子模块，以方便工作协同开发，减少工作冲突。
+	2）如何触发mutations方法？
+		在组件中this.$store.commit('已定义的mutation方法', '负载')
+		建议使用 mapMutations('命名空间', [])进行映射，使用this.进行访问。
+	3）如何触发actions方法？
+		在组件中this.$store.dispatch('已定义的action方法', '负载')
+		建议使用 mapActions('命名空间', [])进行映射，使用this.进行访问。
+	4）如何把根store拆分成多个子module？
+		定义子module时，一定要记得加上 namespaced:true 以开启命名空间
+		在 new Vuex.Store({modules: {}}) 中使用modules选项，对多个子module进行组装。
+	5）四个 mapXXX 的使用
+		mapState 和 mapGetters 只能在computed计算中进行使用。
+		mapMutations 和 mapActions 只能methods选项中进行使用。
+		映射进来的变量和方法，可以使用 this.进行访问，更方便。
 
-* 路由实现，使用`router-view`和`router-link`组件
-```
-<div class="navbar">
-	<!-- 声明式路由 -->
-	<!-- to 指定要跳转至哪个路由 -->
-	<!-- tag 指定用什么HTML标签来替换渲染router-link -->
-	<!-- activeClass 指定导航选项卡的高亮样式 -->
-	<router-link to='/todo' tag='span' activeClass='on'>TodoList</router-link>
-</div>
+#### 四、axios
 
-<!-- 在这里承载一级路由所对应的组件，在这里渲染一线路由所对应的组件 -->
-<router-view></router-view>
-<!-- <router-view name='geek'></router-view> -->
-```
+1、axios有什么优势？
 
-* 嵌套路由，使用路由的`children`字段
-* 动态路由，路由传参`/detail/:id`
-```js
-this.$router.push('/detail/'+item.id)
-```
-* 动态路由，参数获取`this.$route.params`
+	它是基于Promise封装的，用起来非常方便，解决了回调地狱的问题。
+	它在客户端、node.js服务器都可以进行使用。
 
-###### 路由命名与别名
+2、安装与使用入门
 
-* 路由命名，即给路由取一个名称，用一个变量值代表路由
-* 路由别名，可以理解为路由的小名
-```
-{
-	path: '/film',
-	component: Film,
-	alias: '/f',		// 路由/film的别名
-	name: 'myfilm'		// 路由的名称
-}
-```
-```js
-this.$router.push({name: 'myfilm', params: {}})
-```
+	cnpm install axios -S
+	封装axios：axios.create() 创建axios实例，指定基准URL等字符。
+		封装请求拦截器：axios.interceptors.request.use() 在请求发出之前进行拦截。
+		封装响应拦截器：axios.interceptors.response.use() 在客户端收到响应之前进行拦截。
+	axios封装完成后，在代码中就可以调后端接口了。
+		axios({url: '', method: 'GET', params: '入参'}).then()
+		axios({url: '', method: 'POST', data: '入参'}).then()
 
-###### 命名视图
+3、axios+vuex走通Vuex全流程（步骤说明）
 
-```html
-<router-view name='a'></router-view>
-<router-view name='b'></router-view>
-```
-```
-{
-	path: '/film',
-	components: {
-		a: FilmA,
-		b: FilmB
-	}
-}
-```
-* 当访问/film路径时，name=a的视图容器承载FilmA组件，name=b的视图承载FilmB组件。
+	在actions中封装方法，使用axios调取后端接口，成功后把数据mutation到state中去。
+	在组件中使用mapActions映射actions方法，在mounted中触发接口调用。
+	在组件中使用mapState映射state数据，就可以在视图中进行各种渲染了。
+	注意：如果调接口时产生跨域问题，要在vue.config.js中配置代理并重启项目，进而解决跨域问题。特别注意baseUrl的切换，搞清楚哪个才是你需要访问的服务器地址。
 
 
-###### History与Hash模式
+#### 五、UI设计
 
-* 前端有两种路由方案，分别是History模式和Hash模式，Vue-Router默认使用Hash模式。
-* 使用Vue-Router的 mode选项，可以改变其路由模式。
-* History模式时，打包部署到服务端，需要后端配合对路由进行处理，否则会报404，其本质是由`history.pushState`来实现的。
-* Hash模式，Url中拼接了一个`#`符，部署服务端没有404这个问题，其本质是由`location.hash`来实现的。
+	1、安装
 
-###### 全局路由守卫
+	cnpm install vant -S
+	cnpm install babel-plugin-import -D
+	配置babel.config.js文件并重启项目
 
-```js
-let router = new VueRouter({})
-// 路由守卫，全局的路由拦截
-let isLogin = false
-// 在路由匹配成功之前
-router.beforeEach((to, from, next) => {
-  if (to.path === '/order') {
-    if (!isLogin) {
-      // 如果用户没有登录，跳转至 /login
-      next('/login')
-    } else {
-      // 已登录，直接通过
-      next()
-    }
-  } else {
-    next()
-  }
-})
-```
+	2、使用
 
-###### 局部路由守卫
+	import { Button } from 'vant'
+	components: { [Button.name]: Button }
+	<van-button size='small' type="primary">主要按钮</van-button>
 
-```js
-// 在组件的内部，实现路由拦截，即局部守卫
-export default {
-  // 局部的路由守卫，路由拦截
-  // 箭头函数的写法
-  beforeRouteEnter(to, from, next) {
-    let isLogin = true
-    if (!isLogin) {
-      next('/login')
-    } else {
-      next()
-    }
-  }
-}
-```
+	3、rem配置
 
+	index.html引入rem.js
+	vscode中安装 px-to-rem 插件
+	并设置该插件的转化尺寸为 75
+	在写样式时，按 alt+Z 把px转化为rem
 
-#### 使用Element
+	4、sass
 
-```
-// npm install element-ui -S
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
-```
-
-
-#### 使用Vuex状态管理工具
-
-```
-npm install vuex -S
-```
-* 五个核心概念：state, mutations, actions, getters, modules
-* 当分多个modules时，每个module都要手动指定 namespaced:true 命名空间。
-* 多modules时，尽量避免命名冲突，以减少代码的复杂度。
-* 基本写法，一个index.js用于创建store实例，并把各个modules引入进来
-* module实际上是一个对象，但必须加上 namespaced:true
-* 在组件中引入module时，两种基本语法，其一是 ...mapState('user', ['msg']), 其二是 ...mapState('user', {})
-* 当多个module中的key重名时，该如何处理？
-
-
-#### VueRouter异步组件的写法
-
-```
-// router.js
-
-// 异步组件，性能优化
-const Film = ()=>import('@/views/Film.vue')
-const Movie = ()=>import('@/views/Movie.vue')
-const News = ()=>import('@/views/News.vue')
-const User = ()=>import('@/views/User.vue')
-```
-
-
-#### axios的使用
-
-* 前后端分离项目，在工程化环境一般使用axios调接口
-* axios非常轻量级，并且支持Promise
-* axios的使用，必须预先封装，要配置请求拦截器和响应拦截器
-* 在请求拦截器中，比如添加token等
-* 在响应拦截器中，对响应数据进行预先过滤，以失败的情况进行统一处理。
+	cnpm install sass-loader -D
+	cnpm install node-sass -D
+	编写全局的 common.scss 样式文件
+	<style lang="scss" scoped>
+		@import './assets/common.scss';
+		@import '@/assets/common.scss';
+	</style>

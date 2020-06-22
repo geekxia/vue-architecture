@@ -1,12 +1,11 @@
 <template lang="html">
-  <div>
-    <h1>登录页</h1>
-  </div>
+<div>
+  <h3>好货列表</h3>
+</div>
 </template>
 
 <script>
 export default {
-
 }
 </script>
 

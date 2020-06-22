@@ -1,51 +1,44 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
 
-// 测试:http://localhost:9090
-// 上线:http://baidu.com
-var baseURL = 'http://localhost:9090'
+// cnode
+// let baseURL_dev = 'https://cnodejs.org/api/v1'  // 开发环境
 
-// 这是axios实例
+// 周杰伦音乐列表
+let baseURL_dev = 'http://localhost:8888'  // 解决跨域问题
+
+// let baseURL_pro = ''  // 公司域名
+// let baseURL_test = '' // 内网地址
+
+// 创建axios实例
 const fetch = axios.create({
-  baseURL: baseURL,
-  timeout: 7000,
+  baseURL: baseURL_dev,
+  timeout: 7000,  // 超时设置
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   }
 })
 
-// 添加请求拦截器，发生在请求发起之前
-fetch.interceptors.request.use(config => {
-  console.log('请求拦截，ajax发起请求之前', config)
-  var token = localStorage.getItem('token')
-  config.headers.Authorization = token   // 用户鉴权
+// 封装请求拦截器
+fetch.interceptors.request.use((config) => {
+  // 在这里做一些检测或者包装等处理
+  console.log('请求拦截', config)
+  // 鉴权 token添加
+  config.headers.Authorization = localStorage.getItem('token') || ''
   return config
 })
 
-
-// 添加响应拦截器，发生客户端接收数据之前
-fetch.interceptors.response.use(response => {
-  var res = {}
-  console.log('响应拦截，ajax接收数据之前', response)
-  if (response.data && response.data.code===0) {
-    res = response.data.data || {}
+// 封装响应拦截器
+fetch.interceptors.response.use((response) => {
+  // 请求成功
+  console.log('响应拦截', response)
+  // 数据过滤，根据后端标识字符来进行数据
+  if (response.data && response.data.code==0) {
+    return response.data.data
   } else {
-    var msg = response.data.message || '请求错误'
-    Message({
-      message: msg,
-      type: 'error',
-      duration: 3 * 1000
-    })
+    console.log('网络异步，请稍后再试')
   }
-  return res
-}, error => {
-  // 调接口失败时，弹个框提示一个用户
-  const msg = error.Message !== undefined ? error.Message : ''
-  Message({
-    message: '网络错误' + msg,
-    type: 'error',
-    duration: 3 * 1000
-  })
+}, (error) => {
+  // 请求失败
   return Promise.reject(error)
 })
 

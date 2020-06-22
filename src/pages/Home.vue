@@ -1,53 +1,100 @@
 <template lang="html">
-
 <div>
+  <h1>首页<span v-text='msg'></span></h1>
+  <h1 v-text='msg2'></h1>
 
-  <!-- 声明式路由跳转 -->
-  <!-- 这个组件相当于是a链接 -->
-  <!-- to属性指定要跳转到目标url -->
-  <!-- tag属性指定在页面用什么标签来渲染，默认是a标签 -->
-  <router-link to="/todo" tag='span'>TodoList</router-link>
-  <br>
-  <router-link to="/sass" tag='span'>TestSass</router-link>
+  <!-- 渲染音乐列表 -->
+  <div>
+    <div v-for='item in songList' :key='item.id'>
+      <span v-text='item.name'></span>
+    </div>
+  </div>
 
-  <hr>
-  <button type="button" @click='click'>todolist</button>
-  <hr>
 
-  <el-row>
-    <el-button>默认按钮</el-button>
-    <el-button type="primary">主要按钮</el-button>
-    <el-button type="success">成功按钮</el-button>
-    <el-button type="info">信息按钮</el-button>
-    <el-button type="warning">警告按钮</el-button>
-    <el-button type="danger">危险按钮</el-button>
-  </el-row>
-  <hr>
+  <div class='list'>
+    <!-- 声明式导航（不建议这么写） -->
+    <!-- <div v-for='item in goods' :key='item.id'>
+      <router-link :to='"/detail/"+item.id' tag='span'>
+        <span v-text='item.id'></span>
+        <span>-</span>
+        <span v-text='item.name'></span>
+      </router-link>
+    </div> -->
 
-  <el-switch
-    v-model="value"
-    active-color="#13ce66"
-    inactive-color="#ff4949">
-  </el-switch>
+    <!-- 编程式导航（建议的写法） -->
+    <div v-for='item in goods' :key='item.id' @click='skip(item.id)'>
+      <span v-text='item.id'></span>
+      <span>-</span>
+      <span v-text='item.name'></span>
+    </div>
 
+  </div>
 </div>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
-  data: function() {
+  data: function(){
     return {
-      value: true
+      goods: [
+        { id:1, name: '笔记本', price: '5000'},
+        { id:2, name: '鼠标', price: '100'},
+        { id:3, name: '键盘', price: '300'},
+        { id:4, name: '耳机', price: '200'}
+      ]
     }
   },
+  computed: {
+    ...mapState('study', ['msg']),
+    ...mapGetters('study', ['msg2']),
+    ...mapState('song', ['songList'])
+  },
+  mounted() {
+    let params = {
+      ct:24,
+      qqmusic_ver:1298,
+      new_json:1,
+      remoteplace:'txt.yqq.song',
+      searchid: 54616638128860322,
+      t:0,
+      aggr:1,
+      cr:1,
+      catZhida:1,
+      lossless:0,
+      flag_qc:0,
+      p:1,
+      n:10,
+      // w: '%E5%91%A8%E6%9D%B0%E4%BC%A6',
+      w:'周杰伦',
+      g_tk_new_20200303:5381,
+      g_tk:5381,
+      loginUin:0,
+      hostUin:0,
+      format:'json',
+      inCharset:'utf8',
+      outCharset:'utf-8',
+      notice:0,
+      platform:'yqq.json',
+      needNewCode:0
+    }
+    this.getQQMusic(params)
+  },
   methods: {
-    click() {
-      // this.$router.push('/todo')
-      this.$router.push({name: 'todo'})
+    ...mapActions('song', ['getQQMusic']),
+    skip(id) {
+      this.$router.push('/detail/'+id)
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+.list {
+  display: flex;
+}
+.list>div {
+  flex: 1;
+  border: 1px solid #ccc;
+}
 </style>
