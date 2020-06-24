@@ -185,3 +185,93 @@ created by xhf at 2020-6-16
 		@import './assets/common.scss';
 		@import '@/assets/common.scss';
 	</style>
+
+------------------------------------------------------------------------------------
+
+#### 打包
+
+开发环境 -> 测试环境 ？
+开发环境 -> 生产环境 ？
+
+
+1、启动时可用选项
+
+--open 自动打开浏览器
+--port 8899
+
+2、图片使用
+
+```
+<img src="/1.png" alt="图片">
+<img src="../assets/logo.png" alt="">
+<div class="img1"></div>
+<div class="img2"></div>
+
+img {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+.img1 {
+  width: 100px;
+  height: 100px;
+  background: url('/1.png') no-repeat 0 0 / 100px 100px;
+}
+.img2 {
+  width: 100px;
+  height: 100px;
+  background: url('../assets/logo.png') no-repeat 0 0 / 100px 100px;
+}
+```
+
+3、publicPath
+
+/
+/qf/
+./
+https://www.qiniu.com/qf/web/
+
+
+4、hash缓存原理
+
+浏览器缓存原理
+filenameHashing: false 关闭hash缓存
+
+5、多页面配置
+
+不是每个应用都需要是一个单页应用。Vue CLI 支持使用 vue.config.js 中的 pages 选项构建一个多页面的应用。构建好的应用将会在不同的入口之间高效共享通用的 chunk 以获得最佳的加载性能。
+
+```
+pages: {
+	index: {
+		// page 的入口
+		entry: 'src/main.js',
+		// 模板来源
+		template: 'public/index.html',
+		// 在 dist/index.html 的输出
+		filename: 'index.html',
+		// 当使用 title 选项时，
+		// template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+		title: '首页',
+		// 在这个页面中包含的块，默认情况下会包含
+		// 提取出来的通用 chunk 和 vendor chunk。
+		chunks: ['chunk-vendors', 'chunk-common', 'index']
+	},
+	// 当使用只有入口的字符串格式时，
+	// 模板会被推导为 `public/subpage.html`
+	// 并且如果找不到的话，就回退到 `public/index.html`。
+	// 输出文件名会被推导为 `subpage.html`。
+	about : {
+		entry: 'src/main.js',
+		title: '关于我们',
+		chunks: ['chunk-vendors', 'chunk-common', 'index']
+	}
+}
+```
+
+6、项目部署
+
+域名购买与备案、DNS解析服务
+云服务器购买、虚拟主机
+nginx安装与使用、History模式重定向处理
+数据库安装与使用

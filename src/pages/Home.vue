@@ -3,6 +3,12 @@
   <h1>首页<span v-text='msg'></span></h1>
   <h1 v-text='msg2'></h1>
 
+  <img src="/1.png" alt="图片">
+  <img src="../assets/logo.png" alt="">
+  <div class="img1"></div>
+  <div class="img2"></div>
+
+
   <!-- 渲染音乐列表 -->
   <div>
     <div v-for='item in songList' :key='item.id'>
@@ -90,6 +96,22 @@ export default {
 </script>
 
 <style lang="css" scoped>
+img {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+.img1 {
+  width: 100px;
+  height: 100px;
+  background: url('/1.png') no-repeat 0 0 / 100px 100px;
+}
+.img2 {
+  width: 100px;
+  height: 100px;
+  background: url('../assets/logo.png') no-repeat 0 0 / 100px 100px;
+
+}
 .list {
   display: flex;
 }
