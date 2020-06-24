@@ -2,22 +2,12 @@
 
 // node.js代码风格
 module.exports = {
-  devServer: {
-    port: 8888,
-    proxy: {
-      // 代理，转发
-      // 当请求URL中包含 '/soso' 字符串时，才执行代理转发
-      '/soso': {
-        target: 'https://c.y.qq.com',  // 目标（远程）服务器地址
-        ws: true,
-        changeOrigin: true
-      }
-    }
-  },
+  filenameHashing: true,
+
   publicPath: process.env.NODE_ENV === 'production'
     ? './'
     : '/',
-  filenameHashing: false,
+
   pages: {
     index: {
       // page 的入口
@@ -37,10 +27,25 @@ module.exports = {
     // 模板会被推导为 `public/subpage.html`
     // 并且如果找不到的话，就回退到 `public/index.html`。
     // 输出文件名会被推导为 `subpage.html`。
-    about : {
-      entry: 'src/main.js',
-      title: '关于我们',
-      chunks: ['chunk-vendors', 'chunk-common', 'index']
+    about: {
+      entry: 'src/about.js',
+      title: '关于我们'
+    },
+    good: {
+      entry: 'src/good.js',
+      title: '商品'
+    }
+  },
+  devServer: {
+    port: 8888,
+    proxy: {
+      // 代理，转发
+      // 当请求URL中包含 '/soso' 字符串时，才执行代理转发
+      '/soso': {
+        target: 'https://c.y.qq.com',  // 目标（远程）服务器地址
+        ws: true,
+        changeOrigin: true
+      }
     }
   }
 }

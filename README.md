@@ -8,6 +8,8 @@ created by xhf at 2020-6-16
 	业务开发：UI还原、组件设计、业务逻辑实现
 	项目上线
 
+测试驱动开发
+
 #### 一、Vue项目创建
 
 1、安装node.js环境（node -v 验证）
@@ -155,63 +157,219 @@ created by xhf at 2020-6-16
 	注意：如果调接口时产生跨域问题，要在vue.config.js中配置代理并重启项目，进而解决跨域问题。特别注意baseUrl的切换，搞清楚哪个才是你需要访问的服务器地址。
 
 
-#### 五、UI设计
+#### 五、rem布局（移动端）
 
-	1、安装
+1、理解手机的dpr（屏幕像素密码比）
 
-	cnpm install vant -S
-	cnpm install babel-plugin-import -D
-	配置babel.config.js文件并重启项目
+	dpr = 夜晶屏幕px尺寸 / 物理尺寸
+	常用的dpr有：dpr=2, dpr=3
+	window.devicePixelRatio这个api可以获取到当前屏幕的dpr
 
-	2、使用
+2、区分这个CSS单位
 
-	import { Button } from 'vant'
-	components: { [Button.name]: Button }
-	<van-button size='small' type="primary">主要按钮</van-button>
+	px：绝对尺寸
+	rem：相对于html元素的字体(r指的是root),如果html的fx=10px，那么1rem=10px
+	em：相对于当前元素（父级元素）的font-size，如果当前元素的fz=10px，那么1em=10px
 
-	3、rem配置
+3、理解rem布局
 
-	index.html引入rem.js
-	vscode中安装 px-to-rem 插件
-	并设置该插件的转化尺寸为 75
-	在写样式时，按 alt+Z 把px转化为rem
+	所谓的rem布局，就是以rem为单位进行尺寸设置。
+	做法：无论我们的网页运行在什么硬件上，都把根字体设置成当前硬件屏幕的十分之一，那么10rem=屏幕的宽度。
+	举例：如果当前屏幕是750px，我们就 root fz=75px  1rem=75px
+			如果当前屏幕是828px，我们就 root fz=82.8px  1rem=82.8
 
-	4、sass
+	在html文件中，1rem=屏幕宽度*0.1  10rem=屏幕宽度
+	在代码中，1rem = UI稿*0.1  10rem=UI稿的宽度（750px）
+	在代码中，我们 x(px) = (x/75)rem
+
+4、那我该怎么改root(html)的根字体font-size呢?
+```
+	# rem.js
+	// 获取html元素DOM对象
+	var oHtml = document.querySelector('html')
+	// 获取html的总宽度
+	var w = oHtml.getBoundingClientRect().width
+	// 设置根字体的大小等于html节点的宽度的十分之一
+	oHtml.style.fontSize = w/10 + 'px'
+```
+
+5、项目中使用rem布局
+
+	在/public/index.html中引入rem.js。
+	在vscode中安装 px-to-rem 插件，并设置该插件的转化尺寸为 75。
+	在写样式时，按 alt+Z 可以把px转化为rem。
+
+
+#### 六、Sass使用
+
+1、安装
 
 	cnpm install sass-loader -D
 	cnpm install node-sass -D
-	编写全局的 common.scss 样式文件
+
+```
 	<style lang="scss" scoped>
 		@import './assets/common.scss';
 		@import '@/assets/common.scss';
 	</style>
+```
+	要指定style标签的lang='scss'
+	scoped 属性表示局部样式，仅对当前组件生效。
 
-------------------------------------------------------------------------------------
+2、sass基础知识点
 
-#### 打包
+	全局的 common.scss 样式文件，可以使用 @import 导入。
+	作用域：sass允许样式嵌套，以形成作用域关系，& 符号代表父级元素。
+	使用变量：sass中允许定义变量、使用变量，变量使用 $ 来定义。
 
-开发环境 -> 测试环境 ？
-开发环境 -> 生产环境 ？
+3、在vue中使用sass要注意的地方
 
+	sass这门技术的名字叫 sass
+	sass样式表的文件后缀是 .scss
+	在style标签中指定lang时，lang='scss'
+	使用npm安装node-sass模块时会出错，建议使用cnpm进行安装。
+
+#### 七、vant
+
+1、安装vant
+
+	安装vant：cnpm install vant -S
+	配置按需加载（推荐）：
+		cnpm install babel-plugin-import -D
+		配置babel.config.js文件并重启项目（见vant文档）
+
+2、使用入门
+
+	在组件中引入Vant组件：
+		import { Button, Tabbar } from 'vant'
+	把引入的组件转化成局部组件：
+		components: { [Button.name]: Button, [Tabbar.name]: Tabbar }
+	在template中使用vant组件：
+		<van-button size='small' type="primary">按钮</van-button>
+		<van-tabbar route fixed></van-tabbar>
+
+3、温馨提示
+
+	每一个Vant组件都有非常多的自定义属性和自定义事件，一切以文档为准。
+	在使用第三方组件进行项目开发时，我们大部分时间都是在翻组件文档。
+
+
+#### 八、接口文档
+
+登录：/user/login
+    入参: username, password
+    方法: POST
+
+注册：/user/regist
+    入参: username, password, password2
+    方法: POST
+
+
+添加商品：/jd/addGood
+    方法：POST
+    入参：
+        img: String,   // 图片
+        name: String,  // 商品名称
+        desc: String,  // 商品描述
+        price: Number, // 价格
+        cate: String,  // 品类
+        hot: Boolean,  // 是否推荐
+
+获取首页推荐商品：/jd/getHotGoodList
+    方法：GET
+    入参：
+        hot: Boolean  必填, 传true时返回热销推荐的产品，如果不传或false就返回所有商品
+        page: Number  必填，用于实现分页功能
+        size: Number  非必填
+
+获取全部品类：/jd/getAllCates
+    方法：GET
+    入参：无
+
+基于品类进行筛选：/jd/getCateGoodList
+    方法：GET
+    入参：
+        cate: String  品类的英文字段
+
+获取商品详情：/jd/getGoodDetail
+    方法：GET
+    入参：
+        good_id: String  商品id
+
+
+添加到购物车：/jd/addToCart
+    方法：POST
+    入参：
+        num: Number      选填，购买数量
+        good_id: String  商品id
+
+获取购物车列表：/jd/getCartList
+    方法：GET
+    入参：无
+
+更改购物车中的商品数量：/jd/updateCartNum
+    方法：POST
+    入参：
+        num: Number     新的数量
+        id: String      购物车id
+
+删除购物车中的商品：/jd/deleteToCart
+    方法：GET
+    入参：
+        id: String      购物车id
+
+提交购物：/jd/submitToCart
+    方法：POST
+    入参：
+        goods: String  商品id字符串，多个商品id要用英式;进行连接。
+
+
+
+#### 九、自主项目（管理系统开发）
+
+1、学习目标
+
+	掌握管理系统这种产品的功能形态、开发特点。
+	能独立使用Vue脚手架、Vue全家桶搭建工程架构、项目架构。
+	能使用Element、Sass快速完成管理系统的布局，熟练使用常用的表单、表格等组件。
+	能使用Axios与后端进行数据交互、devtools调试。
+
+2、技术栈
+
+	Vue、Vue-Router 单页面应用程序开发
+	Sass、Element   快速布局、灵活使用组件库完成功能业务需求。
+	Vuex、Axios  	 接口联调、功能实现
+
+3、ToB产品 vs. Toc产品
+
+	ToB产品：数据交互极其复杂，一般不用设计UI稿、面向原型开发、使用第三方UI组件库快速布局。
+	ToC产品：常常需要UI设计，用户体验要求极高，产品性能要求也更高。
+
+
+#### 十、项目打包与部署
+
+
+开发环境 -> 测试环境 ？ 开发环境 -> 生产环境 ？
 
 1、启动时可用选项
-
+```
 --open 自动打开浏览器
---port 8899
+--port 8899  自定义端口，不建议使用
+```
 
 2、图片使用
 
+	1）在HMTL、CSS、JS中都可以使用图片。放在assets目录中的图片，最终会被webpack打包并处理。
+	2）放在public目录中的图片，项目打包时不会被处理；并且放在public中的图片，更能方便地进行CDN加速部署。
+
 ```
+<!-- 在HTML中使用图片 -->
 <img src="/1.png" alt="图片">
 <img src="../assets/logo.png" alt="">
 <div class="img1"></div>
 <div class="img2"></div>
 
-img {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-}
+<!-- 在CSS中使用图片 -->
 .img1 {
   width: 100px;
   height: 100px;
@@ -224,23 +382,46 @@ img {
 }
 ```
 
+	3）工作中，我们建议使用模块化来管理项目中所有被使用到的图片。项目中的图片有三个来源，分别是assets目录、public目录和远程外部图片。模块化写法参考如下：
+```
+// 开发环境：指向 public 目录
+let cdnUrl = '/'
+// 线上环境：当项目打包上线时，把cdnUrl切换成图片服务器地址
+// let cdnUrl = 'https://qiniu.com/qf/webapp'
+
+export default {
+	// 远程外部图片
+	jdicon: 'https://wqimg.jd.com/imgproxy/n7/s150x150_jfs/t1/50018/39/8127/229510/5d5b5043E66769ff0/8907776f7bd66d57.jpg.dpg',
+
+	// assets目录中的图片
+  logo: ()=>import('@/assets/logo.png'),
+  a: ()=>import('@/assets/imgs/a.png'),
+
+	// public目录中的图片
+  car: cdnUrl + 'icons/car.png',
+  train: cdnUrl + 'icons/train.png',
+  plane: cdnUrl + 'icons/plane.png'
+}
+```
+
 3、publicPath
 
-/
-/qf/
-./
-https://www.qiniu.com/qf/web/
-
+```
+	./
+	/
+	/qf/
+	https://www.qiniu.com/qf/web/
+```
 
 4、hash缓存原理
 
-浏览器缓存原理
-filenameHashing: false 关闭hash缓存
+浏览器缓存原理 filenameHashing: false 关闭hash缓存
+实际工作中，不要关闭它。
+Hash的作用是为了解决浏览器缓存导致的代码更新问题。
 
 5、多页面配置
 
 不是每个应用都需要是一个单页应用。Vue CLI 支持使用 vue.config.js 中的 pages 选项构建一个多页面的应用。构建好的应用将会在不同的入口之间高效共享通用的 chunk 以获得最佳的加载性能。
-
 ```
 pages: {
 	index: {
@@ -268,7 +449,6 @@ pages: {
 	}
 }
 ```
-
 6、项目部署
 
 域名购买与备案、DNS解析服务
