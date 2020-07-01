@@ -11,6 +11,11 @@ module.exports = {
         target: 'https://c.y.qq.com',  // 目标（远程）服务器地址
         ws: true,
         changeOrigin: true
+      },
+      '/v1': {
+        target: 'http://localhost:9999',  // 目标（远程）服务器地址
+        ws: true,
+        changeOrigin: true
       }
     }
   },

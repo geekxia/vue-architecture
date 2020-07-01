@@ -18,6 +18,7 @@ const Find = ()=>import('./pages/Find.vue')
 const User = ()=>import('./pages/User.vue')
 const Detail = ()=>import('./pages/Detail.vue')
 const Cart = ()=>import('./pages/Cart.vue')
+const Editor = ()=>import('./pages/Editor.vue')
 
 // @ 别名，它代表就是的当前代码所在绝对路径 + /src
 import A from '@/components/home/A.vue'
@@ -66,6 +67,8 @@ let router = new VueRouter({
     { path: '/detail/:id', component: Detail, props: true },
 
     { path: '/cart', component: Cart },
+    { path: '/editor', component: Editor },
+
 
     // 通配符 * 表示匹配任何路径，一定要放在 routes数组后面
     // 把这种匹配范围更大的路由关系，往后放
