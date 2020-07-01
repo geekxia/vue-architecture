@@ -3,10 +3,27 @@
   <h1>首页<span v-text='msg'></span></h1>
   <h1 v-text='msg2'></h1>
 
-  <img src="/1.png" alt="图片">
+  <!-- 绝对路径 -->
+  <img :src="img.jdicon" alt="">
+  <img :src="img.car" alt="">
+  <img :src="img.train" alt="">
+  <img :src="img.plane" alt="">
+  <img :src="img.a" alt="">
+
+
+  <!-- 这种引入方式，在打包时，图片不做任何处理 -->
+  <img src="/1.png" alt="">
+
+  <!-- 相对路径 -->
+  <!-- 这种引入方式，在打包时，图片会被webpack作处理 -->
   <img src="../assets/logo.png" alt="">
+
+  <!-- 尽量避免使用background-image来做图片 -->
   <div class="img1"></div>
   <div class="img2"></div>
+
+
+
 
 
   <!-- 渲染音乐列表 -->
@@ -40,9 +57,11 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import img from '@/utils/imgs'
 export default {
   data: function(){
     return {
+      img,
       goods: [
         { id:1, name: '笔记本', price: '5000'},
         { id:2, name: '鼠标', price: '100'},
@@ -104,13 +123,12 @@ img {
 .img1 {
   width: 100px;
   height: 100px;
-  background: url('/1.png') no-repeat 0 0 / 100px 100px;
+  background: url('/1.png') no-repeat 0 0 / 100px 100px white;
 }
 .img2 {
   width: 100px;
   height: 100px;
-  background: url('../assets/logo.png') no-repeat 0 0 / 100px 100px;
-
+  background: url('../assets/logo.png') no-repeat 0 0 / 100px 100px white;
 }
 .list {
   display: flex;
